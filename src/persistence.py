@@ -7,8 +7,7 @@ import logging
 import os
 from threading import Lock
 from typing import Dict, Iterable
-
-from models import Todo, TodoCreate
+from .models import Todo, TodoCreate
 
 
 class TodoDao:
@@ -55,6 +54,7 @@ class TodoDao:
         """Write all Todo items to the JSON file."""
         # TODO: should write to a temp file and then rename to avoid data loss.
         with self.lock:
+            os.makedirs(os.path.dirname(self.filename), exist_ok=True)
             with open(self.filename, "w") as f:
                 # Convert Pydantic Todo models to plain dicts before dumping.
                 serializable = [t.model_dump() for t in todos]

@@ -1,8 +1,7 @@
 """FastAPI implementation of the Todo REST API."""
 
 from fastapi import FastAPI
-
-from routers import todos
+from .routers import todos
 
 
 # 'app' is refers to FastAPI

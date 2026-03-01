@@ -1,7 +1,7 @@
 import pytest
 
-from persistence import TodoDao
-from models import TodoCreate, Todo
+from ..persistence import TodoDao
+from ..models import TodoCreate, Todo
 
 
 def test_save_and_get(tmp_path, monkeypatch):

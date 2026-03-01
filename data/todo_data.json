@@ -1,10 +1,5 @@
 [
   {
-    "text": "Learn REST",
-    "done": false,
-    "id": 1
-  },
-  {
     "text": "Write a RESTful API using FastAPI",
     "done": false,
     "id": 2
@@ -18,5 +13,10 @@
     "text": "Run the todo service in a container with Nginx and uvicorn",
     "done": false,
     "id": 4
+  },
+  {
+    "text": "KBTG Interview Preparation",
+    "done": false,
+    "id": 5
   }
 ]
