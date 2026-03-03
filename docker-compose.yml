@@ -16,5 +16,4 @@ services:
     build: .
     environment:
       - ROOT_PATH=${ROOT_PATH}
-    volumes:
-      - ./data:/data
+      - TODO_DATA_FILE=${TODO_DATA_FILE}
