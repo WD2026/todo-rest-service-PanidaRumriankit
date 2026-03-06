@@ -1,9 +1,11 @@
 """FastAPI implementation of the Todo REST API."""
 
+from . import logging_config
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .routers import todos
 
+logging_config.configure_logging()
 
 # 'app' is refers to FastAPI
 # use param: redirect_slashes=False to disable automatic

@@ -5,10 +5,13 @@ from fastapi import APIRouter, HTTPException, Request, Response, Query, status
 from ..models import Todo, TodoCreate
 from ..persistence import TodoDao
 
+from ..logging_config import get_logger
+
 DATA_FILE = os.getenv("TODO_DATA_FILE", "./data/todo_data.json")
 
 router = APIRouter(prefix="/todos", tags=["Todos"])
 dao = TodoDao(DATA_FILE)
+logger = get_logger(__name__)
 
 @router.get("/", response_model=list[Todo])
 def get_todos():
@@ -34,6 +37,7 @@ def get_todo(todo_id: int):
     """
     todo = dao.get(todo_id)
     if not todo:
+        logger.warning("Todo not found", todo_id=todo_id)
         raise HTTPException(status_code=404, detail="Todo not found")
     return todo
 
@@ -47,6 +51,7 @@ def update_todo(todo_id: int, todo: TodoCreate):
     """
     existing = dao.get(todo_id)
     if not existing:
+        logger.warning("Todo not found", todo_id=todo_id)
         raise HTTPException(status_code=404, detail="Todo not found")
 
     updated = Todo(
@@ -69,6 +74,7 @@ def delete_todo(todo_id: int):
     try:
         dao.delete(todo_id)
     except ValueError:
+        logger.warning("Todo not found", todo_id=todo_id)
         raise HTTPException(status_code=404, detail="Todo not found")
 
 @router.options("/", status_code=204)
