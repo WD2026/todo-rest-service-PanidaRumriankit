@@ -1,5 +1,12 @@
 # Nginx configuration for Todo REST API reverse proxy
 
+include /etc/nginx/json_format.conf;
+
+# Specify the logging format
+access_log /dev/stdout json_combined;
+# Nginx error logs in the default format
+error_log /dev/stderr warn;
+
 # IP whitelist
 # Allow only these IP ranges.
 allow 158.108.0.0/16;    # KU address
