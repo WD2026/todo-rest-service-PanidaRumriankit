@@ -23,6 +23,7 @@ def get_todos():
 def create_todo(todo: TodoCreate, request: Request, response: Response):
     """Create and save a new todo. A unique ID is assigned."""
     created = dao.save(todo)
+    logger.info("Todo created", todo_id=created.id)
     # Return the location of the new todo.
     location = request.url_for("get_todo", todo_id=created.id).path
     response.headers["Location"] = location
@@ -39,6 +40,7 @@ def get_todo(todo_id: int):
     if not todo:
         logger.warning("Todo not found", todo_id=todo_id)
         raise HTTPException(status_code=404, detail="Todo not found")
+    logger.info("Todo retrieved", todo_id=todo_id)
     return todo
 
 
@@ -59,6 +61,8 @@ def update_todo(todo_id: int, todo: TodoCreate):
         text=todo.text,
         done=todo.done,
     )
+
+    logger.info("Todo updated", todo_id=todo_id)
     return dao.update(updated)
 
 
@@ -73,6 +77,7 @@ def delete_todo(todo_id: int):
     """
     try:
         dao.delete(todo_id)
+        logger.info("Todo deleted", todo_id=todo_id)
     except ValueError:
         logger.warning("Todo not found", todo_id=todo_id)
         raise HTTPException(status_code=404, detail="Todo not found")
@@ -88,5 +93,6 @@ def todo_options(todo_id: int, response: Response):
     """Return the allowed HTTP methods for this URL."""
     todo = dao.get(todo_id)
     if not todo:
+        logger.warning("Todo not found", todo_id=todo_id)
         raise HTTPException(status_code=404, detail="Todo not found")
     response.headers["Allow"] = "GET,PUT,DELETE,OPTIONS"
